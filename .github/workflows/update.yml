@@ -19,25 +19,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Get latest release from tailscale
+      - name: Get latest static version
         id: get_latest_release
-        uses: octokit/request-action@v2.x
-        with:
-          route: GET /repos/tailscale/tailscale/releases/latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(
+            curl -fsSL https://pkgs.tailscale.com/stable/ |
+            grep -oE 'tailscale_[0-9]+\.[0-9]+\.[0-9]+_arm\.tgz' |
+            head -n1 |
+            sed -E 's/tailscale_([0-9]+\.[0-9]+\.[0-9]+)_arm\.tgz/\1/'
+          )
+          echo "Detected static version: $VERSION"
+          echo "version=v$VERSION" >> $GITHUB_OUTPUT
+          echo "new_tag=v$VERSION" >> $GITHUB_OUTPUT
 
       - name: Check current version is up to date
         id: check_version
         run: |
-          NEW_TAG="${{ fromJSON(steps.get_latest_release.outputs.data).tag_name }}" 
-          VERSION="${{ fromJSON(steps.get_latest_release.outputs.data).name }}"
-          CURRENT_TAG=$(curl -s https://raw.githubusercontent.com/ryukora/Magisk-Tailscaled/master/files/VERSION.txt)
+          NEW_TAG="${{ steps.get_latest_release.outputs.new_tag }}"
+          VERSION="${{ steps.get_latest_release.outputs.version }}"
+          CURRENT_TAG=$(curl -fsSL https://raw.githubusercontent.com/ryukora/Magisk-Tailscaled/master/files/VERSION.txt)
+          echo "Current : $CURRENT_TAG"
+          echo "Latest  : $NEW_TAG"
           if [[ "$NEW_TAG" == "$CURRENT_TAG" && "${{ github.event.inputs.force }}" != 'true' ]]; then
             echo "Current version is up to date"
             echo "exit=true" >> $GITHUB_OUTPUT
           else
-            echo "Current version is $CURRENT_TAG, latest version is $NEW_TAG"
             echo "Updating to latest version"
             echo "exit=false" >> $GITHUB_OUTPUT
             echo "version=$VERSION" >> $GITHUB_OUTPUT
@@ -50,31 +56,41 @@ jobs:
         if: steps.check_version.outputs.exit != 'true'
         uses: actions/checkout@v3
 
+      - name: Verify detected version
+        if: steps.check_version.outputs.exit != 'true'
+        run: |
+          echo "Detected version: ${{ steps.check_version.outputs.version }}"
+          echo "Detected tag: ${{ steps.check_version.outputs.new_tag }}"
+
       - name: Download and unzip latest tailscale binaries
         if: steps.check_version.outputs.exit != 'true'
         run: |
-          PREFIX=${{ steps.check_version.outputs.version }}
-          PREFIX=${PREFIX#v}   # remove leading v
+          set -e
+          PREFIX="${{ steps.check_version.outputs.version }}"
+          PREFIX="${PREFIX#v}"
           ARCHS=("arm" "arm64")
           mkdir -p files
           cd files
-          for ARCH in ${ARCHS[@]}; do
+          for ARCH in "${ARCHS[@]}"; do
             URL="https://pkgs.tailscale.com/stable/tailscale_${PREFIX}_${ARCH}.tgz"
             echo "Downloading $URL"
-            curl -fLO $URL
-            if tar tzf "tailscale_${PREFIX}_${ARCH}.tgz" >/dev/null 2>&1; then
-              tar -xzf "tailscale_${PREFIX}_${ARCH}.tgz" "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscale_${PREFIX}_${ARCH}/tailscale"
-            else
-              echo "Downloaded file is not a valid tar.gz: $URL"
+            if ! curl -fL --retry 3 --retry-delay 5 -O "$URL"; then
+              echo "Failed to download $URL"
               exit 1
             fi
+            FILE="tailscale_${PREFIX}_${ARCH}.tgz"
+            if ! tar tzf "$FILE" >/dev/null 2>&1; then
+              echo "Invalid tarball: $FILE"
+              exit 1
+            fi
+            tar -xzf "$FILE"
             mv "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscaled-${ARCH}"
             mv "tailscale_${PREFIX}_${ARCH}/tailscale" "tailscale-${ARCH}"
-            rm -r "tailscale_${PREFIX}_${ARCH}"
-            rm "tailscale_${PREFIX}_${ARCH}.tgz"
+            rm -rf "tailscale_${PREFIX}_${ARCH}"
+            rm -f "$FILE"
           done
           cd ..
-          ls -la files
+          ls -lah files
       
       - name: Update VERSION.txt
         if: steps.check_version.outputs.exit != 'true'
