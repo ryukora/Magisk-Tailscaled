@@ -1,5 +1,8 @@
 name: Check and Update Tailscale Binary
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
     - cron: '0 0 * * *' # Runs every day at midnight
@@ -58,7 +61,13 @@ jobs:
           for ARCH in ${ARCHS[@]}; do
             URL="https://pkgs.tailscale.com/stable/tailscale_${PREFIX}_${ARCH}.tgz"
             curl -LO $URL
-            tar -xzf "tailscale_${PREFIX}_${ARCH}.tgz" "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscale_${PREFIX}_${ARCH}/tailscale"
+            file "tailscale_${PREFIX}_${ARCH}.tgz"
+            # if the file is not gzip, use tar without -z
+            if file "tailscale_${PREFIX}_${ARCH}.tgz" | grep -q "gzip"; then
+              tar -xzf "tailscale_${PREFIX}_${ARCH}.tgz" "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscale_${PREFIX}_${ARCH}/tailscale"
+            else
+              tar -xf "tailscale_${PREFIX}_${ARCH}.tgz" "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscale_${PREFIX}_${ARCH}/tailscale"
+            fi
             mv "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscaled-${ARCH}"
             mv "tailscale_${PREFIX}_${ARCH}/tailscale" "tailscale-${ARCH}"
             rm -r "tailscale_${PREFIX}_${ARCH}"
