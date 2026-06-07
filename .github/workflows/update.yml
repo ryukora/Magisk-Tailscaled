@@ -59,11 +59,10 @@ jobs:
           mkdir -p files
           cd files
           for ARCH in ${ARCHS[@]}; do
-            URL="https://pkgs.tailscale.com/stable/tailscale_${PREFIX}_linux_${ARCH}.tgz"
+            URL="https://pkgs.tailscale.com/stable/tailscale_${PREFIX}_${ARCH}.tgz"
             curl -fLO $URL
-            file "tailscale_${PREFIX}_${ARCH}.tgz"
-            if tar tzf "tailscale_${PREFIX}_linux_${ARCH}.tgz" >/dev/null 2>&1; then
-              tar -xzf "tailscale_${PREFIX}_linux_${ARCH}.tgz" "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscale_${PREFIX}_${ARCH}/tailscale"
+            if tar tzf "tailscale_${PREFIX}_${ARCH}.tgz" >/dev/null 2>&1; then
+              tar -xzf "tailscale_${PREFIX}_${ARCH}.tgz" "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscale_${PREFIX}_${ARCH}/tailscale"
             else
               echo "Downloaded file is not a valid tar.gz: $URL"
               exit 1
