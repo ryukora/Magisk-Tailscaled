@@ -54,12 +54,13 @@ jobs:
         if: steps.check_version.outputs.exit != 'true'
         run: |
           PREFIX=${{ steps.check_version.outputs.version }}
-          PREFIX=${PREFIX#v}
+          PREFIX=${PREFIX#v}   # remove leading v
           ARCHS=("arm" "arm64")
           mkdir -p files
           cd files
           for ARCH in ${ARCHS[@]}; do
             URL="https://pkgs.tailscale.com/stable/tailscale_${PREFIX}_${ARCH}.tgz"
+            echo "Downloading $URL"
             curl -fLO $URL
             if tar tzf "tailscale_${PREFIX}_${ARCH}.tgz" >/dev/null 2>&1; then
               tar -xzf "tailscale_${PREFIX}_${ARCH}.tgz" "tailscale_${PREFIX}_${ARCH}/tailscaled" "tailscale_${PREFIX}_${ARCH}/tailscale"
