@@ -1,8 +1,8 @@
-[![anasfanani - Magisk-Tailscaled](https://img.shields.io/static/v1?label=anasfanani&message=Magisk-Tailscaled&color=blue&logo=github)](https://github.com/anasfanani/Magisk-Tailscaled "Go to GitHub repo")
-[![Check and Update Tailscale Binary](https://github.com/anasfanani/Magisk-Tailscaled/actions/workflows/update.yml/badge.svg)](https://github.com/anasfanani/Magisk-Tailscaled/actions/workflows/update.yml)
-[![Github All Releases](https://img.shields.io/github/downloads/anasfanani/Magisk-Tailscaled/total.svg)]()
-[![GitHub release](https://img.shields.io/github/release/anasfanani/Magisk-Tailscaled?include_prereleases=&sort=semver&color=blue)](https://github.com/anasfanani/Magisk-Tailscaled/releases/)
-[![issues - Magisk-Tailscaled](https://img.shields.io/github/issues/anasfanani/Magisk-Tailscaled)](https://github.com/anasfanani/Magisk-Tailscaled/issues)
+[![ryukora - Magisk-Tailscaled](https://img.shields.io/static/v1?label=ryukora&message=Magisk-Tailscaled&color=blue&logo=github)](https://github.com/ryukora/Magisk-Tailscaled "Go to GitHub repo")
+[![Check and Update Tailscale Binary](https://github.com/ryukora/Magisk-Tailscaled/actions/workflows/update.yml/badge.svg)](https://github.com/ryukora/Magisk-Tailscaled/actions/workflows/update.yml)
+[![Github All Releases](https://img.shields.io/github/downloads/ryukora/Magisk-Tailscaled/total.svg)]()
+[![GitHub release](https://img.shields.io/github/release/ryukora/Magisk-Tailscaled?include_prereleases=&sort=semver&color=blue)](https://github.com/ryukora/Magisk-Tailscaled/releases/)
+[![issues - Magisk-Tailscaled](https://img.shields.io/github/issues/ryukora/Magisk-Tailscaled)](https://github.com/ryukora/Magisk-Tailscaled/issues)
 [![Static Badge](https://img.shields.io/badge/Discussion-Telegram-blue?style=flat&logo=telegram&link=t.me%2Fsystembinsh%2F158)](https://t.me/systembinsh/158)
 
 # Magisk Tailscaled
@@ -24,7 +24,7 @@ The [Tailscale app](https://play.google.com/store/apps/details?id=com.tailscale.
 
 ## Quick Start & Installation
 
-1. Download the latest zip file from the [Releases](https://github.com/anasfanani/Magisk-Tailscaled/releases/latest) page.
+1. Download the latest zip file from the [Releases](https://github.com/ryukora/Magisk-Tailscaled/releases/latest) page.
 2. Install the downloaded zip file using Magisk & reboot your phone.
 3. Open the Terminal.
 4. Login with `su -c tailscale login`
