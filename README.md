@@ -212,7 +212,7 @@ If you still can't do it by yourself, I'm very welcome to people who need help.
 
 You can check this [issue reference](https://github.com/anasfanani/Magisk-Tailscaled/issues/17).
 
-### ipv6
+### IPv6?
 
 Unfortunately, I'm too lazy to learn IPv6.
 
@@ -232,7 +232,7 @@ You can explore the issue tab. If it does not exist, you can open an issue. To h
 
 1. Restart tailscaled with `tailscaled.service restart`
 2. Reproduce what you are doing that has a problem.
-3. Get log at `/data/adb/tailscale/run/tailscaled.log`
+3. Get log at `/data/adb/tailscale/run/tailscaled.log`.
 
 ## Notes
 
