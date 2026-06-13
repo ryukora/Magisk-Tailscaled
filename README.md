@@ -202,7 +202,7 @@ If the last step fails, the problem likely lies with `socks5-tun`. Verify there 
 
 ### My subnet routes aren't working
 
-Yes, because we need to define the routes with `iptables` in file `tailscaled.tun.up` and `tailscaled.tun.down`, you can check this [issue reference](https://github.com/anasfanani/Magisk-Tailscaled/issues/17).
+That's because it needs to define the routes with `iptables` in the file `tailscaled.tun.up` and `tailscaled.tun.down`, you can check this [issue reference](https://github.com/anasfanani/Magisk-Tailscaled/issues/17).
 I suppose you're already know how iptables works; if you don't, there are chatbots to ask.
 You can copy the whole `tailscaled.tun.up` script to ChatGPT and send instructions. Please add 192.168.1.1/24 to this route, also don't forget `tailscaled.tun.down`. 
 
