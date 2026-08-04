@@ -1,6 +1,6 @@
 {
-  "version": "v1.98.10.0",
-  "versionCode": "01981000",
-  "zipUrl": "https://github.com/ryukora/Magisk-Tailscaled/releases/download/v1.98.10.0/Magisk-Tailscaled-v1.98.10.0.zip",
+  "version": "v1.102.1.0",
+  "versionCode": "011020100",
+  "zipUrl": "https://github.com/ryukora/Magisk-Tailscaled/releases/download/v1.102.1.0/Magisk-Tailscaled-v1.102.1.0.zip",
   "changelog": "https://raw.githubusercontent.com/ryukora/Magisk-Tailscaled/master/CHANGELOG.txt"
 }
