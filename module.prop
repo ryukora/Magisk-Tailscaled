@@ -1,7 +1,7 @@
 id=magisk-tailscaled
 name=Magisk Tailscaled
-version=1.104.5.0
-versionCode=011040500
+version=1.104.6.0
+versionCode=011040600
 author=ryukora
 description=Tailscale. The easiest, most secure way to use WireGuard and 2FA.
 updateJson=https://raw.githubusercontent.com/ryukora/Magisk-Tailscaled/master/update.json
